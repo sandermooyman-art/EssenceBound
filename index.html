@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0710">
+<title>EssenceBound</title>
+<style>
+:root{--gold:#d4b36f;--pale:#f2dfae;--ink:#eee7d8;--muted:#aca3b4;--bg:#09070d;--panel:#17101f;--line:rgba(212,179,111,.38)}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--ink);font-family:Georgia,"Times New Roman",serif;background:radial-gradient(circle at 50% -10%,#2d1a3b 0,transparent 34%),radial-gradient(circle at 10% 70%,#25151c 0,transparent 32%),linear-gradient(145deg,#08060b,#120c18 52%,#07060a)}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.14;background-image:linear-gradient(30deg,rgba(255,255,255,.035) 12%,transparent 12.5%,transparent 87%,rgba(255,255,255,.035) 87.5%),linear-gradient(150deg,rgba(255,255,255,.035) 12%,transparent 12.5%,transparent 87%,rgba(255,255,255,.035) 87.5%);background-size:80px 140px}
+header{height:72px;display:flex;align-items:center;gap:14px;padding:0 22px;border-bottom:1px solid var(--line);background:rgba(8,6,11,.9);position:sticky;top:0;z-index:20}
+.logo{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--gold);transform:rotate(45deg);color:var(--pale);box-shadow:inset 0 0 12px #000}
+.brand h1{font-size:20px;letter-spacing:.2em;margin:0;font-weight:600}.brand small,.eyebrow{font:700 9px/1.2 system-ui,sans-serif;letter-spacing:.23em;color:var(--gold);text-transform:uppercase}.coins{margin-left:auto;padding:7px 12px;border:1px solid var(--line);font-size:13px;color:var(--pale)}
+main{width:min(1240px,100%);margin:auto}.screen{display:none;padding:24px;min-height:calc(100vh - 72px)}.screen.active{display:block}#menu.active,#result.active{display:grid;place-items:center}
+.panel{position:relative;border:1px solid rgba(222,189,121,.55);background:linear-gradient(155deg,rgba(34,24,45,.96),rgba(13,10,18,.98));box-shadow:0 22px 70px rgba(0,0,0,.5),inset 0 0 0 5px rgba(8,6,10,.75),inset 0 0 0 6px rgba(212,179,111,.12)}
+.panel:before,.panel:after{content:"◆";position:absolute;color:var(--gold);font-size:12px;background:#120c18;padding:0 5px}.panel:before{top:-7px;left:22px}.panel:after{right:22px;bottom:-7px}
+.hero{width:min(760px,100%);padding:58px 46px;text-align:center}.orn{color:var(--gold);opacity:.75;letter-spacing:.25em}.hero h2,.heading h2,.result h2{font-size:clamp(38px,7vw,70px);line-height:.98;margin:13px 0 16px;font-weight:500}.hero p,.heading p,.result p{color:#c0b7c3;line-height:1.65}.actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:28px}
+button{font:inherit}.btn{min-height:46px;padding:0 22px;border:1px solid rgba(218,183,112,.55);color:var(--ink);background:rgba(255,255,255,.025);cursor:pointer;letter-spacing:.07em}.btn:hover{filter:brightness(1.12)}.btn.primary{color:#1b120d;font-weight:700;background:linear-gradient(#efdca9,#bb8f4e);border-color:#f4e2b5}.btn:disabled{opacity:.35;cursor:not-allowed}
+.heading{text-align:center;max-width:800px;margin:0 auto 24px}.heading h2{font-size:clamp(34px,5vw,56px)}
+.starters{display:grid;grid-template-columns:repeat(5,1fr);gap:13px}.starter{min-height:330px;padding:18px;cursor:pointer;border:1px solid rgba(212,179,111,.28);background:linear-gradient(175deg,rgba(255,255,255,.035),rgba(7,5,10,.82));transition:.18s}.starter:hover,.starter.sel{transform:translateY(-5px);border-color:var(--pale);box-shadow:0 18px 44px rgba(0,0,0,.35)}.crest{width:68px;height:68px;margin:4px auto 19px;border-radius:50%;display:grid;place-items:center;font-size:30px;border:1px solid rgba(255,255,255,.28)}.starter h3{text-align:center;font-size:23px;margin:0}.starter .sub{text-align:center;color:var(--gold);font:9px system-ui,sans-serif;letter-spacing:.14em;margin:5px 0 16px}.starter p{font-size:13px;line-height:1.55;color:#bdb4c1}.starter ul{list-style:none;padding:12px 0 0;margin:12px 0 0;border-top:1px solid rgba(255,255,255,.07);font:11px/1.5 system-ui,sans-serif;color:#d0c8d1}.starter li{margin:6px 0}.starter li:before{content:"✦";color:var(--gold);margin-right:7px}.crimson .crest,.card.crimson .art{background:radial-gradient(circle,#a64151,#3d111a)}.verdant .crest,.card.verdant .art{background:radial-gradient(circle,#4d8961,#11291e)}.ivory .crest,.card.ivory .art{background:radial-gradient(circle,#d5c28d,#55461f);color:#23180c}.umbral .crest,.card.umbral .art{background:radial-gradient(circle,#715583,#21162b)}.azure .crest,.card.azure .art{background:radial-gradient(circle,#4d84aa,#122b3d)}
+.starterbar{margin-top:16px;padding:16px 20px;display:flex;align-items:center;gap:16px}.starterbar strong{font-size:20px}.starterbar .btn{margin-left:auto}
+.battle{padding:12px}.arena{border:1px solid var(--line);background:radial-gradient(ellipse at center,rgba(113,80,130,.09),transparent 42%),rgba(8,6,11,.72);box-shadow:inset 0 0 70px #000;min-height:calc(100vh - 96px);overflow:hidden}.battlehead{height:48px;display:flex;align-items:center;gap:10px;padding:5px 9px;border-bottom:1px solid rgba(212,179,111,.2)}.phase{flex:1;text-align:center;font:700 10px system-ui,sans-serif;letter-spacing:.25em;color:var(--pale)}.round{font-size:12px;color:var(--muted)}
+.combatant{width:min(600px,calc(100% - 20px));margin:8px auto;padding:8px 10px;display:flex;align-items:center;gap:10px;border:1px solid rgba(212,179,111,.2);background:rgba(255,255,255,.02)}.avatar{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--gold);font-size:23px;background:radial-gradient(circle,#50335f,#130e18)}.who{flex:1;min-width:0}.who small{font:8px system-ui,sans-serif;letter-spacing:.18em;color:var(--gold)}.who strong{display:block;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.orb{width:58px;height:48px;border-radius:50%;display:grid;place-items:center;align-content:center;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.025)}.orb small{font:7px system-ui,sans-serif;color:var(--muted)}.orb b{font-size:15px}
+.zone{height:140px;display:flex;align-items:center;justify-content:center;gap:7px;padding:5px;overflow-x:auto;border-top:1px solid rgba(255,255,255,.025);border-bottom:1px solid rgba(255,255,255,.025)}.mid{text-align:center;color:#b7aeba;font-style:italic;font-size:12px;padding:8px}.handwrap{max-width:980px;margin:auto;padding:8px 10px 12px;border-top:1px solid rgba(212,179,111,.2)}.handtop{display:flex;justify-content:space-between;font:8px system-ui,sans-serif;letter-spacing:.15em;color:var(--muted);margin-bottom:5px}.hand{min-height:184px;display:flex;align-items:flex-end;gap:7px;overflow-x:auto;padding:2px}
+.card{width:126px;height:178px;flex:0 0 126px;position:relative;border-radius:8px;overflow:hidden;border:1px solid rgba(232,206,151,.48);background:#17121d;box-shadow:0 7px 20px rgba(0,0,0,.42),inset 0 0 0 3px rgba(0,0,0,.5);user-select:none}.card:after{content:"";position:absolute;inset:4px;border:1px solid rgba(255,255,255,.1);border-radius:5px;pointer-events:none}.hand .card.can{cursor:pointer;box-shadow:0 7px 20px rgba(0,0,0,.42),0 0 15px rgba(212,179,111,.16)}.hand .card:hover{transform:translateY(-7px)}.art{height:72px;margin:7px 7px 0;display:grid;place-items:center;font-size:34px;border:1px solid rgba(255,255,255,.12)}.body{padding:6px 8px}.body h4{font-size:12px;line-height:1.05;margin:0;min-height:25px}.kind{font:7px system-ui,sans-serif;color:var(--gold);letter-spacing:.12em;text-transform:uppercase}.txt{font-size:8px;line-height:1.25;color:#c4bbc7;margin:5px 0}.cost{position:absolute;top:5px;left:5px;z-index:3;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#08060b;border:1px solid rgba(255,255,255,.45);font-weight:700}.stats{position:absolute;right:7px;bottom:6px;z-index:3;display:flex;gap:3px;font:700 10px system-ui,sans-serif}.stats span{min-width:22px;padding:4px;background:#08060b;border:1px solid rgba(255,255,255,.17);text-align:center}
+.zone .card{width:86px;height:121px;flex-basis:86px}.zone .art{height:48px;margin:4px 4px 0;font-size:24px}.zone .body{padding:4px 5px}.zone .body h4{font-size:8px;min-height:18px}.zone .kind{font-size:5px}.zone .txt{display:none}.zone .cost{width:17px;height:17px;font-size:8px;top:3px;left:3px}.zone .stats{right:4px;bottom:3px;font-size:7px}.zone .stats span{min-width:16px;padding:2px}.zone .card.ready{cursor:pointer;box-shadow:0 6px 18px #000,0 0 12px rgba(212,179,111,.18)}.zone .card.used{filter:brightness(.55);transform:rotate(2deg)}
+.result{width:min(560px,100%);padding:46px;text-align:center}.reward{width:160px;margin:22px auto;padding:12px;border:1px solid var(--line);color:var(--pale)}
+@media(max-width:1050px){.starters{grid-template-columns:repeat(3,1fr)}}@media(max-width:680px){header{padding:0 12px}.brand small{display:none}.screen{padding:14px 10px}.starters{grid-template-columns:1fr 1fr}.starterbar{flex-direction:column;align-items:stretch}.starterbar .btn{margin:0}.combatant{gap:7px}.who strong{font-size:13px}.orb{width:48px}.zone{justify-content:flex-start}.hand{justify-content:flex-start}}@media(max-width:430px){.starters{grid-template-columns:1fr}.brand h1{font-size:15px}}
+</style>
+</head>
+<body>
+<header><div class="logo">✦</div><div class="brand"><h1>ESSENCEBOUND</h1><small>THE FIVEFOLD COVENANT</small></div><div class="coins" id="coins">0 ✧</div></header>
+<main>
+<section class="screen active" id="menu"><div class="panel hero"><div class="orn">❦ ───── ✦ ───── ❦</div><p class="eyebrow">A CARD DUEL OF FIVE ESSENCES</p><h2>Bind your first covenant.</h2><p>Choose an Essence, summon creatures and break the rival Binder before your own life is extinguished.</p><div class="actions"><button class="btn primary" id="begin">Begin Covenant</button></div><div class="orn" style="margin-top:32px">❦ ───── ✦ ───── ❦</div></div></section>
+<section class="screen" id="choose"><div class="heading"><p class="eyebrow">CHOOSE YOUR FIRST ESSENCE</p><h2>The covenant answers.</h2><p>Each path uses a different style of pressure, healing, control or sacrifice.</p></div><div class="starters" id="starters"></div><div class="panel starterbar"><div><small class="eyebrow">SELECTED</small><br><strong id="selected">None</strong></div><button class="btn primary" id="start" disabled>Seal Covenant & Duel</button></div></section>
+<section class="screen battle" id="battle"><div class="arena"><div class="battlehead"><button class="btn" id="leave">Menu</button><span class="round">Round <b id="round">1</b></span><div class="phase" id="phase">YOUR TURN</div><button class="btn" id="end">End Turn</button></div>
+<div class="combatant"><div class="avatar">♜</div><div class="who"><small>RIVAL BINDER</small><strong>Serath, the Veiled</strong></div><div class="orb"><small>LIFE</small><b id="alife">20</b></div><div class="orb"><small>ESSENCE</small><b id="amana">0/0</b></div></div>
+<div class="zone" id="aboard"></div><div class="mid" id="msg">The covenant stirs...</div><div class="zone" id="pboard"></div>
+<div class="combatant"><div class="avatar" id="glyph">✧</div><div class="who"><small>YOUR COVENANT</small><strong id="pname">Unbound</strong></div><div class="orb"><small>LIFE</small><b id="plife">20</b></div><div class="orb"><small>ESSENCE</small><b id="pmana">0/0</b></div></div>
+<div class="handwrap"><div class="handtop"><span>YOUR HAND</span><span id="deck">DECK 0</span></div><div class="hand" id="hand"></div></div></div></section>
+<section class="screen" id="result"><div class="panel result"><p class="eyebrow">DUEL COMPLETE</p><h2 id="rtitle">Victory</h2><p id="rtext"></p><div class="reward" id="reward"></div><div class="actions"><button class="btn primary" id="rematch">Rematch</button><button class="btn" id="home">Main Menu</button></div></div></section>
+</main>
+<script>
+(function(){
+var E={
+crimson:{n:"Crimson",t:"Ember Oath",g:"✹",s:"Ruin • Fury • Sacrifice",d:"Relentless pressure and direct damage.",p:["Direct damage","Aggressive creatures","Fast finishers"]},
+verdant:{n:"Verdant",t:"Wild Covenant",g:"♣",s:"Growth • Might • Renewal",d:"Patient strength that builds a larger field.",p:["Large creatures","Healing","Efficient bodies"]},
+ivory:{n:"Ivory",t:"Radiant Accord",g:"☼",s:"Grace • Order • Shelter",d:"Measured protection and resilient units.",p:["Healing","Protection","Balanced creatures"]},
+umbral:{n:"Umbral",t:"Veiled Pact",g:"☾",s:"Decay • Bargain • Return",d:"Powerful bargains and life-draining threats.",p:["Life drain","Risk for reward","Heavy finishers"]},
+azure:{n:"Azure",t:"Tide Compact",g:"≈",s:"Insight • Delay • Control",d:"Careful timing, extra cards and control.",p:["Card draw","Tempo","Flexible answers"]}};
+function C(n,c,a,h,x,g){return{n:n,c:c,a:a,h:h,x:x,g:g||"✦"}}
+var cards={
+crimson:[C("Ashfang Initiate",1,1,2,"On play: deal 1 to rival.","⚔"),C("Cinder Duelist",2,3,2,"A disciplined burning blade.","⚔"),C("Pyre Hound",3,4,3,"Built for relentless pressure.","♞"),C("Rite of Sparks",2,0,0,"Spell: deal 3 to rival.","✹"),C("Ember Tyrant",5,6,5,"On play: deal 2 to rival.","♛")],
+verdant:[C("Mossbound Scout",1,1,3,"A stubborn living shield.","❧"),C("Briar Stag",2,2,4,"On play: restore 1 life.","♘"),C("Ancient Grovekin",4,5,6,"Older than the oath-stones.","♜"),C("Surge of Spring",2,0,0,"Spell: restore 4 life.","♣"),C("Worldroot Colossus",6,7,8,"The forest arrives.","♚")],
+ivory:[C("Dawn Acolyte",1,1,3,"On play: restore 1 life.","☼"),C("Gilded Sentinel",2,2,4,"A patient shield.","✥"),C("Lion of the Spire",4,4,6,"A radiant guardian.","♌"),C("Radiant Mercy",2,0,0,"Spell: restore 3 and draw 1.","☼"),C("Seraph of Accord",6,6,7,"On play: restore 3 life.","♛")],
+umbral:[C("Gloam Rat",1,2,1,"Small, vicious, never alone.","☾"),C("Veil Reaper",2,3,2,"On play: drain 1 life.","☽"),C("Gravebound Knight",4,5,4,"The oath outlived the body.","♞"),C("Black Bargain",2,0,0,"Spell: lose 1, draw 2.","☾"),C("Queen Beneath",6,7,6,"On play: drain 2 life.","♛")],
+azure:[C("Mist Scribe",1,1,2,"On play: draw 1.","⌁"),C("Tideglass Adept",2,2,3,"Sees the move before it comes.","≈"),C("Storm Heron",4,4,5,"An omen above the electric sea.","♝"),C("Deep Recall",2,0,0,"Spell: draw 2.","⌁"),C("Leviathan Oracle",6,6,7,"On play: draw 2.","♚")]};
+var S={sel:null,p:null,a:null,round:1,turn:"p",coins:0,over:false};
+var $=function(id){return document.getElementById(id)}, screens=["menu","choose","battle","result"];
+function show(x){screens.forEach(function(k){$(k).classList.toggle("active",k===x)})}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function deck(k){var src=cards[k],d=[];for(var i=0;i<20;i++){var q=Object.assign({},src[i%src.length]);q.id=k+i+"-"+Math.random();d.push(q)}return shuffle(d)}
+function side(k){return{k:k,life:20,max:0,mana:0,deck:deck(k),hand:[],board:[]}}
+function draw(s,n){for(var i=0;i<(n||1);i++){if(s.deck.length)s.hand.push(s.deck.shift());else s.life--}}
+function turn(s){s.max=Math.min(10,s.max+1);s.mana=s.max;s.board.forEach(function(c){c.used=false;c.sick=false});draw(s,1)}
+function start(){
+var keys=Object.keys(E).filter(function(k){return k!==S.sel}),ak=keys[Math.floor(Math.random()*keys.length)];
+S.p=side(S.sel);S.a=side(ak);S.round=1;S.turn="p";S.over=false;draw(S.p,4);draw(S.a,4);S.p.max=1;S.p.mana=1;
+$("pname").textContent=E[S.sel].n+" Binder";$("glyph").textContent=E[S.sel].g;show("battle");msg("Your "+E[S.sel].n+" covenant awakens.");render()}
+function cardHTML(c,k,board,owner){
+var can=!board&&owner===S.p&&S.turn==="p"&&c.c<=S.p.mana;
+var ready=board&&owner===S.p&&S.turn==="p"&&!c.used&&!c.sick;
+return '<article class="card '+k+(can?' can':'')+(ready?' ready':'')+(c.used?' used':'')+'" data-id="'+c.id+'"><div class="cost">'+c.c+'</div><div class="art">'+c.g+'</div><div class="body"><h4>'+c.n+'</h4><div class="kind">'+(c.a?"creature":"spell")+'</div><p class="txt">'+c.x+'</p></div>'+(c.a?'<div class="stats"><span>'+c.a+'</span><span>'+c.h+'</span></div>':'')+'</article>'}
+function render(){
+$("round").textContent=S.round;$("phase").textContent=S.turn==="p"?"YOUR TURN":"RIVAL TURN";$("plife").textContent=S.p.life;$("alife").textContent=S.a.life;$("pmana").textContent=S.p.mana+"/"+S.p.max;$("amana").textContent=S.a.mana+"/"+S.a.max;$("deck").textContent="DECK "+S.p.deck.length;$("end").disabled=S.turn!=="p";
+$("hand").innerHTML=S.p.hand.map(function(c){return cardHTML(c,S.p.k,false,S.p)}).join("");Array.prototype.forEach.call($("hand").querySelectorAll(".card"),function(el){el.addEventListener("click",function(){play(el.dataset.id)})});
+$("pboard").innerHTML=S.p.board.map(function(c){return cardHTML(c,S.p.k,true,S.p)}).join("");Array.prototype.forEach.call($("pboard").querySelectorAll(".card"),function(el){el.addEventListener("click",function(){attack(el.dataset.id)})});
+$("aboard").innerHTML=S.a.board.map(function(c){return cardHTML(c,S.a.k,true,S.a)}).join("")}
+function onplay(c,o,e){
+if(c.n==="Ashfang Initiate")e.life-=1;if(c.n==="Ember Tyrant")e.life-=2;if(c.n==="Briar Stag"||c.n==="Dawn Acolyte")o.life+=1;if(c.n==="Seraph of Accord")o.life+=3;
+if(c.n==="Veil Reaper"){e.life-=1;o.life+=1}if(c.n==="Queen Beneath"){e.life-=2;o.life+=2}if(c.n==="Mist Scribe")draw(o,1);if(c.n==="Leviathan Oracle")draw(o,2)}
+function spell(c,o,e){
+if(c.n==="Rite of Sparks")e.life-=3;if(c.n==="Surge of Spring")o.life+=4;if(c.n==="Radiant Mercy"){o.life+=3;draw(o,1)}if(c.n==="Black Bargain"){o.life-=1;draw(o,2)}if(c.n==="Deep Recall")draw(o,2)}
+function play(id){
+if(S.turn!=="p"||S.over)return;var i=S.p.hand.findIndex(function(c){return c.id===id});if(i<0)return;var c=S.p.hand[i];if(c.c>S.p.mana)return;
+S.p.mana-=c.c;S.p.hand.splice(i,1);if(c.a){c.used=true;c.sick=true;S.p.board.push(c);onplay(c,S.p,S.a);msg(c.n+" answers your call.")}else{spell(c,S.p,S.a);msg(c.n+" reshapes the duel.")}check();render()}
+function attack(id){
+if(S.turn!=="p"||S.over)return;var c=S.p.board.find(function(x){return x.id===id});if(!c||c.used||c.sick)return;c.used=true;
+if(S.a.board.length){var t=S.a.board[Math.floor(Math.random()*S.a.board.length)];t.h-=c.a;c.h-=t.a;msg(c.n+" clashes with "+t.n+".");dead()}else{S.a.life-=c.a;msg(c.n+" strikes Serath for "+c.a+".")}check();render()}
+function dead(){S.p.board=S.p.board.filter(function(c){return c.h>0});S.a.board=S.a.board.filter(function(c){return c.h>0})}
+function aiPlay(){
+var opts=S.a.hand.filter(function(c){return c.c<=S.a.mana}).sort(function(a,b){return b.c-a.c});if(!opts.length)return false;var c=opts[0],i=S.a.hand.indexOf(c);S.a.mana-=c.c;S.a.hand.splice(i,1);
+if(c.a){c.used=true;c.sick=true;S.a.board.push(c);onplay(c,S.a,S.p);msg("Serath summons "+c.n+".")}else{spell(c,S.a,S.p);msg("Serath invokes "+c.n+".")}return true}
+function aiTurn(){
+S.turn="a";turn(S.a);render();setTimeout(function loop(){if(S.over)return;if(aiPlay()){check();render();if(!S.over)return setTimeout(loop,280)}
+var units=S.a.board.filter(function(c){return !c.used&&!c.sick});units.forEach(function(c){c.used=true;if(S.p.board.length&&Math.random()<.55){var t=S.p.board[Math.floor(Math.random()*S.p.board.length)];t.h-=c.a;c.h-=t.a}else S.p.life-=c.a});dead();check();render();
+if(!S.over){S.round++;S.turn="p";turn(S.p);msg("Your Essence returns. Choose your move.");render()}},360)}
+function check(){dead();if(S.p.life<=0)finish(false);else if(S.a.life<=0)finish(true)}
+function finish(win){if(S.over)return;S.over=true;var r=win?40:12;S.coins+=r;$("coins").textContent=S.coins+" ✧";$("rtitle").textContent=win?"Victory":"Defeat";$("rtext").textContent=win?"Serath's binding fractures beneath your covenant.":"The rival Binder claims this duel. Your covenant will return wiser.";$("reward").textContent="+"+r+" ✧";setTimeout(function(){show("result")},350)}
+function msg(x){$("msg").textContent=x}
+Object.keys(E).forEach(function(k){var e=E[k],el=document.createElement("article");el.className="starter "+k;el.innerHTML='<div class="crest">'+e.g+'</div><h3>'+e.n+'</h3><div class="sub">'+e.t.toUpperCase()+'</div><p>'+e.d+'</p><ul>'+e.p.map(function(x){return"<li>"+x+"</li>"}).join("")+"</ul>";el.addEventListener("click",function(){S.sel=k;Array.prototype.forEach.call(document.querySelectorAll(".starter"),function(x){x.classList.remove("sel")});el.classList.add("sel");$("selected").textContent=e.n+" — "+e.t;$("start").disabled=false});$("starters").appendChild(el)});
+$("begin").addEventListener("click",function(){show("choose")});$("start").addEventListener("click",start);$("end").addEventListener("click",aiTurn);$("leave").addEventListener("click",function(){show("menu")});$("home").addEventListener("click",function(){show("menu")});$("rematch").addEventListener("click",start);
+})();
+</script>
+</body></html>
